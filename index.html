@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAAT25 Lajiharjoitus</title>
+    <link rel="stylesheet" href="style.css">
+</head><body id="ultimate-guesser-game">
+    <h1>LAAT25 Lajiharjoitus</h1>
+            <div id="category-selection">
+                <label for="category-select">Valitse kategoria:</label>
+                <select id="category-select">
+                    <option value="all">Kaikki lajit</option>
+                </select>
+            </div>
+            <div id="search-container">        <label for="species-search">Näytä laji:</label>
+        <input type="text" id="species-search" placeholder="Aloita kirjoittamaan lajin nimeä...">
+        <div id="suggestions-container"></div>
+    </div>
+    <div id="score">Pisteet: 0</div>
+    <div id="game-container">
+        <img id="species-image" src="" alt="Species image" onclick="showOptions()">
+        <div id="options-container"></div>
+        <div id="feedback"></div>
+        <p id="answerInstruction">Klikkaamalla kuvaa saat vaihtoehdot, tai voit kirjoittaa lajin nimen suoraan tähän:</p>
+        <input type="text" id="answerInput" placeholder="Kirjoita lajin nimi ja paina Enter">
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
