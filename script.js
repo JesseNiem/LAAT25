@@ -218,7 +218,8 @@ const scientificNameMappings = {
     "hilleri": "Mustela putorius",
     "hirvi": "Alces alces",
     "jänis": "Lepus timidus",
-    "majava": "Castor fiber"
+    "majava": "Castor fiber",
+    "jänis": "https://peda.net/p/jaana.vuorela/kasvunkansio/esitelm%C3%A4t/mets%C3%A4j%C3%A4nis/ml/j%C3%A4nis-jpg:file/download/1f918f94368294978017f018608ab77f160a2351/J%C3%A4nis.jpg"
 };
 
 const scoreEl = document.getElementById("score");
@@ -234,6 +235,17 @@ let score = 0;
 let currentSpecies;
 let incorrectlyAnsweredSpecies = []; // Stores species answered incorrectly
 let unansweredSpecies = []; // Stores all species not yet answered correctly
+
+function getCategoryForSpecies(speciesName) {
+    for (const category in allSpeciesData) {
+        if (allSpeciesData[category].includes(speciesName)) {
+            if (category.startsWith("Linnut -")) return "Linnut";
+            if (category.startsWith("Nisäkkäät -")) return "Nisäkkäät";
+            return category;
+        }
+    }
+    return null; // Should not happen if all species are in allSpeciesData
+}
 
 function populateCategories() {
     const allOption = document.createElement("option");
@@ -459,17 +471,13 @@ function showSpecificSpecies(speciesName) {
     } else if (selectedCategory === "Linnut") {
         for (const cat in allSpeciesData) {
             if (cat.startsWith("Linnut -")) {
-                allSpeciesData[cat].forEach(species => {
-                    speciesListForOptions.push(species);
-                });
+                allSpeciesListForOptions = allSpeciesListForOptions.concat(allSpeciesData[cat]);
             }
         }
     } else if (selectedCategory === "Nisäkkäät") {
         for (const cat in allSpeciesData) {
             if (cat.startsWith("Nisäkkäät -")) {
-                allSpeciesData[cat].forEach(species => {
-                    speciesListForOptions.push(species);
-                });
+                allSpeciesListForOptions = allSpeciesListForOptions.concat(allSpeciesData[cat]);
             }
         }
     } else {
@@ -514,28 +522,28 @@ function handleSearchInput() {
         return;
     }
 
-    let allSpeciesFlat = [];
+    let speciesListForSuggestions = [];
     const selectedCategory = categorySelect.value;
 
     if (selectedCategory === "all") {
-        allSpeciesFlat = Object.values(allSpeciesData).flat();
+        speciesListForSuggestions = Object.values(allSpeciesData).flat();
     } else if (selectedCategory === "Linnut") {
         for (const cat in allSpeciesData) {
             if (cat.startsWith("Linnut -")) {
-                allSpeciesFlat = allSpeciesFlat.concat(allSpeciesData[cat]);
+                speciesListForSuggestions = speciesListForSuggestions.concat(allSpeciesData[cat]);
             }
         }
     } else if (selectedCategory === "Nisäkkäät") {
         for (const cat in allSpeciesData) {
             if (cat.startsWith("Nisäkkäät -")) {
-                allSpeciesFlat = allSpeciesFlat.concat(allSpeciesData[cat]);
+                speciesListForSuggestions = speciesListForSuggestions.concat(allSpeciesData[cat]);
             }
         }
     } else {
-        allSpeciesFlat = allSpeciesData[selectedCategory];
+        speciesListForSuggestions = allSpeciesData[selectedCategory];
     }
 
-    const filteredSpecies = allSpeciesFlat.filter(species =>
+    const filteredSpecies = speciesListForSuggestions.filter(species =>
         species.toLowerCase().startsWith(query)
     );
 
